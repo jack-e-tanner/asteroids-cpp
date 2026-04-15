@@ -34,6 +34,23 @@ void Game::render() {
   m_window.display();
 }
 
+void Game::checkCollisions() {
+  for (size_t i = 0; i < m_entities.size(); i++) {
+    for (size_t j = i + 1; j < m_entities.size(); j++) {
+      Entity& a = *m_entities[i];
+      Entity& b = *m_entities[j];
+
+      sf::Vector2f d = a.position() - b.position();
+      float r = a.radius() + b.radius();
+
+      if (d.x * d.x + d.y * d.y < r * r) {
+        a.onCollision(b);
+        b.onCollision(a);
+      }
+    }
+  }
+}
+
 void Game::update(sf::Time dt) {
   sf::Vector2u size = m_window.getSize();
   sf::FloatRect bounds(0.f, 0.f, static_cast<float>(size.x),
@@ -43,4 +60,6 @@ void Game::update(sf::Time dt) {
     entity->update(dt);
     entity->onBounds(bounds);
   }
+
+  checkCollisions();
 }

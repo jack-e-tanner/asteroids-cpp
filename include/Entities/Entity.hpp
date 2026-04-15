@@ -11,6 +11,8 @@ class Entity {
   virtual void draw(sf::RenderWindow& window) const;
   virtual void update(sf::Time dt);
   virtual void onBounds(sf::FloatRect bounds) = 0;
+  virtual float radius() const = 0;
+  virtual void onCollision(Entity& other) {}
 
   sf::Vector2f position() const { return m_sprite.getPosition(); }
 

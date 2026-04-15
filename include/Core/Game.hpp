@@ -2,6 +2,7 @@
 #define Header_Game
 
 #include <SFML/Graphics.hpp>
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>
@@ -21,9 +22,16 @@ class Game {
         std::unique_ptr<T>(new T(std::forward<Args>(args)...)));
   }
 
+  void addEntities(std::vector<std::unique_ptr<Entity>> entities) {
+    m_entities.insert(m_entities.end(),
+                      std::make_move_iterator(entities.begin()),
+                      std::make_move_iterator(entities.end()));
+  }
+
  private:
   void render();
   void update(sf::Time dt);
+  void checkCollisions();
 
   sf::RenderWindow m_window;
   std::vector<std::unique_ptr<Entity>> m_entities;

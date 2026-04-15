@@ -52,5 +52,3 @@ void Player::onBounds(sf::FloatRect bounds) {
   }
   m_sprite.setPosition(pos);
 }
-
-void Player::shoot() {}
