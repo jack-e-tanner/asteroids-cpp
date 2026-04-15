@@ -33,6 +33,22 @@ void Player::update(sf::Time dt) {
 
   normalize(m_velocity, speed);
   Entity::update(dt);
+
+  m_fireCooldown -= dt.asSeconds();
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) &&
+      m_fireCooldown <= 0.f) {
+    const float PI = 3.14159265f;
+    float facingRad = (m_sprite.getRotation() - 90.f) * PI / 180.f;
+    sf::Vector2f facing(std::cos(facingRad), std::sin(facingRad));
+
+    float tipOffset = m_sprite.getGlobalBounds().height / 2.f;
+    sf::Vector2f tip = m_sprite.getPosition() + facing * tipOffset;
+
+    const float bulletSpeed = 500.f;
+    spawnBullet(tip, facing * bulletSpeed);
+
+    m_fireCooldown = 0.25f;
+  }
 }
 
 void Player::onBounds(sf::FloatRect bounds) {

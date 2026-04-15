@@ -6,7 +6,11 @@
 
 Game::Game(unsigned int width, unsigned int height, const std::string& title)
     : m_window(sf::VideoMode(width, height), title) {
-  addEntity<Player>("assets/ship.png", sf::Vector2f(200.f, 150.f));
+  auto player = std::unique_ptr<Player>(
+      new Player("assets/ship.png", sf::Vector2f(200.f, 150.f)));
+  m_player = player.get();
+  m_entities.push_back(std::move(player));
+
   addEntity<Asteroid>("assets/asteroid.png", sf::Vector2f(400.f, 150.f));
 }
 
@@ -61,5 +65,16 @@ void Game::update(sf::Time dt) {
     entity->onBounds(bounds);
   }
 
+  addEntities(m_player->takePending());
+
   checkCollisions();
+  removeDead();
+}
+
+void Game::removeDead() {
+  m_entities.erase(std::remove_if(m_entities.begin(), m_entities.end(),
+                                  [](const std::unique_ptr<Entity>& entity) {
+                                    return !entity->isAlive();
+                                  }),
+                   m_entities.end());
 }

@@ -8,9 +8,8 @@
 
 class Bullet : public Entity {
  public:
-  Bullet(const std::string& texturePath, sf::Vector2f pos);
-
-  void update(sf::Time dt) override;
+  Bullet(const std::string& texturePath, sf::Vector2f pos,
+         sf::Vector2f velocity);
 
   void onBounds(sf::FloatRect bounds) override;
 

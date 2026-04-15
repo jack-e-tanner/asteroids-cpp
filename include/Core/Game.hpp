@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "Entities/Entity.hpp"
+#include "Entities/Player.hpp"
 
 class Game {
  public:
@@ -33,9 +34,13 @@ class Game {
   void update(sf::Time dt);
   void checkCollisions();
 
+  void removeDead();
+
   sf::RenderWindow m_window;
   std::vector<std::unique_ptr<Entity>> m_entities;
   sf::Clock m_clock;
+
+  Player* m_player = nullptr;
 };
 
 #endif

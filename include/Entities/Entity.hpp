@@ -15,11 +15,13 @@ class Entity {
   virtual void onCollision(Entity& other) {}
 
   sf::Vector2f position() const { return m_sprite.getPosition(); }
+  bool isAlive() const { return m_alive; }
 
  protected:
   Entity(const std::string& texturePath, sf::Vector2f pos);
 
   sf::Texture m_texture;
+  bool m_alive{true};
   sf::Sprite m_sprite;
   sf::Vector2f m_velocity{0.f, 0.f};
 };
